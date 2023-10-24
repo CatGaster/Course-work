@@ -1,7 +1,7 @@
 import requests
 import json
 import yadisk
-from urllib.parse import urlencode
+
 
 app_id=51774439
 vk_oauth_url= "https://oauth.vk.com/authorize"
@@ -40,7 +40,7 @@ class VKAPICLIENT:
         # print (len(response["response"]["items"]))
         return response
 
-client = VKAPICLIENT(token, int(input("Введите ID: ")))
+client = VKAPICLIENT(token, int(input("Введите VK id : ")))
 y_token = input("Введите Яндекс OAuth Токен: ")
 
 def Upload():
@@ -62,6 +62,6 @@ def Upload():
 
             Y_token=yadisk.YaDisk(token=y_token)
             Y_token.upload(like + id_ +".jpg", like + id_ +".jpg")
-
+            
             print(vk_save_photo, like, id_)
 Upload()
