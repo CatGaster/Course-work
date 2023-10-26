@@ -13,10 +13,10 @@ params_dict={
     "response_type": "token",
 }
 
-# oauth_url = f'{vk_oauth_url}?{urlencode(params_dict)}'
-token = "vk1.a.CZ-1CakxnwPv23oPW3pQ6KoVX7jHTqoA0iSlJgkRMQRyeHLz_lSzZHQbfm2bxSdvVKvqaSnjmZhS_nsmkPgj7tvYG7fqAqrzkZQ-vTB_Kn9kyg7K8wug8SUZkavrgfbTAQ4h0qGTODDHqNfGhSjWa8-OETTsJiieFjKE3PIoaOhUyIi4pus-l72bvzs_mLfS"
+token = ""
 
-class VKAPICLIENT:
+class VKAPIClient:
+    
     api_url = "https://api.vk.com/method/"
 
     def __init__(self, token, user_id):
@@ -31,20 +31,30 @@ class VKAPICLIENT:
         }
 
 
-    def get_photos(self,count=int(input("Введите количество фотографий(): ")), rev = int(input("Выберите порядок поиска (1 антихронологический) (0 хронологический): "))):
-        self.count=count
-        self.rev= rev
+    def get_photos(self, ):
         method_params = self.common_params()
-        method_params.update({"owner_id": self.user_id,"count": self.count, "album_id": "profile", "extended": "likes","rev": self.rev, "photo_sizes": "o", })
+        method_params.update({"owner_id": self.user_id, "count": self.count, "rev": self.rev, "album_id": "profile", "extended": "likes", "photo_sizes": "o", })
         response = requests.get(f"{self.api_url}photos.get", params=method_params).json()
-        # print (len(response["response"]["items"]))
         return response
+    
+    def get_count(self,count):
+        self.count=count
+        method_params = self.common_params()
+        method_params.update({"count": self.count})
+        
+    def get_rev(self,rev):
+        self.rev=rev
+        method_params = self.common_params()
+        method_params.update({"rev": self.rev})
 
-client = VKAPICLIENT(token, int(input("Введите VK id : ")))
-y_token = input("Введите Яндекс OAuth Токен: ")
+        
+def upload():
+        
+    client = VKAPIClient(token,input("Введите VK id : "),)
+    y_token = input("Введите Яндекс OAuth Токен: ")
 
-def Upload():
-
+    client.get_rev(int(input("Введите Порядок (0 Хронологический) (1 Антихронологический) : ")))
+    client.get_count(int(input("Введите количество фото : ")))
     for photo in client.get_photos()["response"]["items"]:
         vk_save_photo=photo["sizes"][-1]["url"]
         like = f"{photo["likes"]["count"]} like "
@@ -60,8 +70,10 @@ def Upload():
             with open(like + id_ + ".jpg","wb") as f1:
                 f1.write(response.content)
 
-            Y_token=yadisk.YaDisk(token=y_token)
-            Y_token.upload(like + id_ +".jpg", like + id_ +".jpg")
+            yandex_token=yadisk.YaDisk(token=y_token)
+            yandex_token.upload(like + id_ +".jpg", like + id_ +".jpg")
             
             print(vk_save_photo, like, id_)
-Upload()
+
+if __name__ == "__main__":
+    upload()
