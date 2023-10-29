@@ -1,5 +1,5 @@
-import requests
 import json
+import requests
 import yadisk
 
 
@@ -12,8 +12,8 @@ params_dict={
     "scope": "photos",
     "response_type": "token",
 }
-
 token = ""
+
 
 class VKAPIClient:
     
@@ -30,20 +30,21 @@ class VKAPIClient:
         "user_id": self.user_id,
         }
 
-
-    def get_photos(self, ):
+    def get_photos(self,):
         method_params = self.common_params()
-        method_params.update({"owner_id": self.user_id, "count": self.count, "rev": self.rev, "album_id": "profile", "extended": "likes", "photo_sizes": "o", })
+        method_params.update({"owner_id": self.user_id, "count": self.count,
+                            "rev": self.rev, "album_id": "profile", "extended": "likes",
+                            "photo_sizes": "o", })
         response = requests.get(f"{self.api_url}photos.get", params=method_params).json()
         return response
     
     def get_count(self,count):
-        self.count=count
+        self.count = count
         method_params = self.common_params()
         method_params.update({"count": self.count})
         
     def get_rev(self,rev):
-        self.rev=rev
+        self.rev = rev
         method_params = self.common_params()
         method_params.update({"rev": self.rev})
 
@@ -56,11 +57,11 @@ def upload():
     client.get_rev(int(input("Введите Порядок (0 Хронологический) (1 Антихронологический) : ")))
     client.get_count(int(input("Введите количество фото : ")))
     for photo in client.get_photos()["response"]["items"]:
-        vk_save_photo=photo["sizes"][-1]["url"]
+        vk_save_photo = photo["sizes"][-1]["url"]
         like = f"{photo["likes"]["count"]} like "
         id_=f'{photo["id"]} id фото;'
 
-        with open ("vk_save_photo.json", "w") as file:
+        with open("vk_save_photo.json", "w") as file:
             json.dump(vk_save_photo, file)
     
         with open("vk_save_photo.json", "r") as file:
@@ -70,7 +71,7 @@ def upload():
             with open(like + id_ + ".jpg","wb") as f1:
                 f1.write(response.content)
 
-            yandex_token=yadisk.YaDisk(token=y_token)
+            yandex_token = yadisk.YaDisk(token = y_token)
             yandex_token.upload(like + id_ +".jpg", like + id_ +".jpg")
             
             print(vk_save_photo, like, id_)
