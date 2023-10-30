@@ -11,9 +11,6 @@ import requests
 #     "response_type": "token",
 # }
 
-
-# oauth_url =f'{vk_oauth_url}?{urlencode(params_dict)}'"
-
 token = ""
 
 
@@ -65,9 +62,9 @@ def upload():
     client.get_count(int(input("Введите количество фото : ")))
 
     for photo in client.get_photos()["response"]["items"]:
-        vk_save_photo=photo["sizes"][-1]["url"]
+        vk_save_photo = photo["sizes"][-1]["url"]
         like = f"{photo["likes"]["count"]} like "
-        id_=f'{photo["id"]} id фото;'
+        id_= f'{photo["id"]} id фото;'
 
         with open ("vk_save_photo.json", "w") as file:
             json.dump(vk_save_photo, file)
@@ -79,8 +76,8 @@ def upload():
         with open(like + id_ + ".jpg","wb") as f1:
                 f1.write(response.content)
 
-        param={"path": "VK_image/"+ like + id_  + ".jpg"}
-        response=requests.get("https://cloud-api.yandex.net/v1/disk/resources/upload", params=param, headers=headers)
+        param = {"path": "VK_image/"+ like + id_  + ".jpg"}
+        response = requests.get("https://cloud-api.yandex.net/v1/disk/resources/upload", params=param, headers=headers)
         url_upload = response.json().get("href")
 
         with open(like + id_ + ".jpg", "rb") as file:
