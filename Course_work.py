@@ -32,7 +32,8 @@ class VKAPIClient:
         "user_id": self.user_id,
         }
 
-    def get_photos(self,):
+
+    def get_photos(self, ):
         method_params = self.common_params()
         method_params.update({"owner_id": self.user_id, "count": self.count,
                                "rev": self.rev, "album_id": "profile", "extended": "likes",
