@@ -100,8 +100,7 @@ def upload():
     if response.status_code == 201:
         print(f"Создана Папка{yandex_disk.name_folder()['path']} на вашем Яндекс диске")
     else:
-        print("Папка уже существует или произолша иная ошибка: ",
-              response.status_code)
+        print("Папка уже существует или произолша иная ошибка: ", response.status_code)
 
     client.get_rev(int(input("Введите Порядок поиска (0 Хронологический) (1 Антихронологический) : ")))
     client.get_count(int(input("Введите количество фото : ")))
