@@ -1,7 +1,6 @@
 import json
 import requests
 
-
 app_id = 51774439
 vk_oauth_url = "https://oauth.vk.com/authorize"
 params_dict = {
@@ -12,7 +11,7 @@ params_dict = {
     "response_type": "token",
 }
 
-token = ""
+token = input("Введите VK OAuth токен: ")
 
 
 class VKAPIClient:
